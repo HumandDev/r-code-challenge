@@ -1,8 +1,11 @@
-import axios from 'axios';
+import axios from "axios";
 
-const api = axios.create({
-  baseURL: 'https://rickandmortyapi.com/api',
+export const api = axios.create({
+  baseURL: "https://rickandmortyapi.com/api",
   timeout: 15000,
 });
 
-export default api;
+export const localApi = axios.create({
+  baseURL: "http://localhost:3000",
+  timeout: 15000,
+});
