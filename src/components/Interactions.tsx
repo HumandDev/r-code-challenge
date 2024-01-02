@@ -12,13 +12,14 @@ import { transformDate } from "../utils";
 type Props = {
   interactions?: Interaction[];
   loading: boolean;
+  show: boolean;
 };
 
-function Interactions({ interactions, loading }: Props) {
+function Interactions({ interactions, loading, show }: Props) {
   if (loading) {
     return <CircularProgress className="mt-20" />;
   }
-  if (!interactions || interactions.length <= 0) {
+  if (!interactions || interactions.length <= 0 || !show) {
     return null;
   }
   return (

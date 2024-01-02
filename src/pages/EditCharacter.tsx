@@ -58,7 +58,7 @@ function EditCharacter() {
       },
     };
     await editCharacter(body, +id!);
-    navigate(`/${id}`);
+    navigate(`/${id}`, { replace: true });
   };
 
   return (

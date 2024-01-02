@@ -128,6 +128,7 @@ function Character() {
             <Interactions
               interactions={interactions}
               loading={interactionsLoading}
+              show={!character.deleted}
             />
             <Comments
               comments={comments}
