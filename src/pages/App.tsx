@@ -82,6 +82,8 @@ function App() {
                 className="flex flex-row items-center gap-4 cursor-pointer"
               >
                 <img
+                  width={100}
+                  height={100}
                   src={character.image}
                   className="w-[100]px h-[100px] rounded-full"
                   alt={`${character.name}'s profile img'`}
