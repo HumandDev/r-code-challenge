@@ -13,7 +13,7 @@ export class CommentsService {
     private readonly charactersService: CharactersService
   ) {}
 
-  async createComment(characterId: string, commentDTO: CommentDTO) {
+  async createComment(characterId: number, commentDTO: CommentDTO) {
     const character = await this.charactersService.findById(characterId);
     const comment = this.commentsRepository.create({
       character,
@@ -22,7 +22,7 @@ export class CommentsService {
     return await this.commentsRepository.save(comment);
   }
 
-  async getComments(characterId: string): Promise<Comment[]> {
+  async getComments(characterId: number): Promise<Comment[]> {
     return await this.commentsRepository
       .createQueryBuilder("comment")
       .innerJoinAndSelect("comment.character", "character")

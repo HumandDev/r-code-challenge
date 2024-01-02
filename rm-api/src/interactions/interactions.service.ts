@@ -19,7 +19,7 @@ export class InteractionsService {
     return await this.interactionsRepository.save(interaction);
   }
 
-  async getInteractions(characterId: string): Promise<Interaction[]> {
+  async getInteractions(characterId: number): Promise<Interaction[]> {
     const interactions = await this.interactionsRepository
       .createQueryBuilder("interaction")
       .innerJoinAndSelect("interaction.character", "character")

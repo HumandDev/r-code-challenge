@@ -34,17 +34,17 @@ export class CharactersService {
     };
   }
 
-  async getCharacterById(id: string): Promise<Character> {
+  async getCharacterById(id: number): Promise<Character> {
     return this.charactersRepository.findOne({
       where: {
-        id: parseInt(id),
+        id,
       },
     });
   }
 
   async editCharacter(
     character: Partial<Character>,
-    id: string
+    id: number
   ): Promise<Character> {
     const maybeCharacter = await this.findById(id);
 
@@ -58,15 +58,15 @@ export class CharactersService {
       InteractionType.UPDATE
     );
 
-    await this.charactersRepository.update(parseInt(id), updatedCharacter);
+    await this.charactersRepository.update(id, updatedCharacter);
     return updatedCharacter;
   }
 
-  async findById(id: string): Promise<Character> {
+  async findById(id: number): Promise<Character> {
     try {
       return await this.charactersRepository.findOneOrFail({
         where: {
-          id: parseInt(id),
+          id,
         },
       });
     } catch (error) {
@@ -74,7 +74,7 @@ export class CharactersService {
     }
   }
 
-  async deleteCharacter(id: string): Promise<any> {
+  async deleteCharacter(id: number): Promise<any> {
     const character = await this.findById(id);
 
     const updatedCharacter = {
@@ -82,7 +82,7 @@ export class CharactersService {
       deleted: true,
     };
 
-    await this.charactersRepository.update(parseInt(id), updatedCharacter);
+    await this.charactersRepository.update(id, updatedCharacter);
     return updatedCharacter;
   }
 }

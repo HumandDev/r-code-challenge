@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -26,43 +27,45 @@ export class CharactersController {
   ) {}
 
   @Get("/")
-  getCharacters(@Query() query): Promise<PaginatedResult<Character[]>> {
+  getCharacters(@Query() query: any): Promise<PaginatedResult<Character[]>> {
     return this.charactersService.getCharacters(query);
   }
 
   @Get("/:id")
-  getCharacterById(@Param("id") id: string): Promise<Character> {
+  getCharacterById(@Param("id", ParseIntPipe) id: number): Promise<Character> {
     return this.charactersService.getCharacterById(id);
   }
 
   @Put("/:id")
   editCharacter(
-    @Param("id") id: string,
+    @Param("id", ParseIntPipe) id: number,
     @Body() character: Partial<Character>
   ) {
     return this.charactersService.editCharacter(character, id);
   }
 
   @Delete("/:id")
-  deleteCharacter(@Param("id") id: string) {
+  deleteCharacter(@Param("id", ParseIntPipe) id: number) {
     return this.charactersService.deleteCharacter(id);
   }
 
   @Get("/:id/comments")
-  getComments(@Param("id") id: string): Promise<Comment[]> {
+  getComments(@Param("id", ParseIntPipe) id: number): Promise<Comment[]> {
     return this.commentsService.getComments(id);
   }
 
   @Post("/:id/comments")
   createComment(
-    @Param("id") id: string,
+    @Param("id", ParseIntPipe) id: number,
     @Body() commentDTO: CommentDTO
   ): Promise<Comment> {
     return this.commentsService.createComment(id, commentDTO);
   }
 
   @Get("/:id/interactions")
-  getInteractions(@Param("id") id: string): Promise<Interaction[]> {
+  getInteractions(
+    @Param("id", ParseIntPipe) id: number
+  ): Promise<Interaction[]> {
     return this.interactionsService.getInteractions(id);
   }
 }
