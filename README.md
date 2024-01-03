@@ -27,20 +27,42 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+# Nest.js Application with PostgreSQL
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Introduction
+This document provides instructions on how to set up and start a Nest.js application with a PostgreSQL database. The application is configured to work with the Rick and Morty API, populating the database with character data.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Prerequisites
+- Node.js
+- PostgreSQL Database
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Environment Setup
+Before starting the application, ensure that you have the following environment variables set in your `.env` file:
+- `DB_PORT`
+- `DB_DATABASE`
+- `DB_USER`
+- `DB_HOST`
+- `DB_PASS`
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+These variables configure the PostgreSQL database connection.
 
-## Learn More
+## Starting the Application
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+1. **Change Directory**:
+Navigate to the API's directory:
+`cd ./rm-api`
+2. **Install Dependencies**: 
+Install the required Node.js packages:
+`npm i`
+3. **Database Setup**:
+Ensure your PostgreSQL database is running and accessible with the credentials provided in the `.env` file.
+4. **Populate Database**:
+Run the script to populate the database with data from the Rick and Morty API:
+`node ./scripts/populateDB.js`
+5. **Start the Nest.js Application in Development Mode**:
+Run the application:
+`npm run start:dev`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Usage
+After starting the application, you can access the API endpoints as defined in your Nest.js application.
