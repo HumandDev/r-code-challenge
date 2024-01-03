@@ -1,40 +1,26 @@
-import React, { useEffect, useMemo, useState } from "react";
-import "./App.css";
+import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getCharacters } from "../services/character";
-import { Character } from "../interfaces/character";
-
-export const API_URL = "https://rickandmortyapi.com/api/character";
+import { useQuery } from "@tanstack/react-query";
 
 function App() {
-  const [characters, setCharacters] = useState<Character[]>([]);
   const [page, setPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false);
   const [totalPages, setTotalPages] = useState<number>(0);
   const [nameQuery, setNameQuery] = useState<string>("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetchCharacters() {
-      try {
-        setLoading(true);
-        const { data } = await getCharacters(page, nameQuery);
-        const characters = data.data;
-        setTotalPages(data.meta.total);
-        setCharacters(characters);
-      } catch (error: any) {
-        if (error.response.status === 404) {
-          setCharacters([]);
-        } else {
-          console.log(error);
-        }
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    void fetchCharacters();
-  }, [nameQuery, page]);
+  const {
+    data: characters,
+    isLoading,
+    isError,
+  } = useQuery({
+    queryKey: ["characters", page, nameQuery],
+    queryFn: () =>
+      getCharacters(page, nameQuery).then((res) => {
+        setTotalPages(res.meta.total);
+        return res.data;
+      }),
+  });
 
   function handleQueryChange(name: string) {
     setPage(1);
@@ -54,12 +40,12 @@ function App() {
   }
 
   const showPagination = useMemo(() => {
-    return characters.length > 0 && !loading;
-  }, [characters, loading]);
+    return !!characters && characters.length > 0 && !isLoading;
+  }, [characters, isLoading]);
 
   const [nextPageDisabled, prevPageDisabled] = useMemo(() => {
-    return [page === totalPages || loading, page <= 1 || loading];
-  }, [page, totalPages, loading]);
+    return [page === totalPages || isLoading, page <= 1 || isLoading];
+  }, [page, totalPages, isLoading]);
 
   return (
     <div className="h-full min-h-screen flex flex-col items-center bg-slate-600 p-4">
@@ -68,13 +54,14 @@ function App() {
       </h1>
       <div className="flex flex-col mt-8 gap-8 items-start w-[500px] bg-slate-700 p-4 rounded-lg">
         <>
+          {isError && <h1>Error fetching characters...</h1>}
           <input
             value={nameQuery}
             onChange={(e) => handleQueryChange(e.target.value)}
             className="w-full h-12 rounded-lg bg-slate-800 text-slate-300 px-4 focus:border-teal-500 focus:outline-none"
             placeholder="Search by name"
           />
-          {characters.map((character) => {
+          {characters?.map((character) => {
             return (
               <div
                 key={character.id}
@@ -102,7 +89,7 @@ function App() {
               </div>
             );
           })}
-          {characters.length === 0 && (
+          {characters?.length === 0 && (
             <div className="text-slate-300 text-xl font-sans">
               No characters were found...
             </div>
